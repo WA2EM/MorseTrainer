@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Morse Code Trainer</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="theme-color" content="#0f1115">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Morse">
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --accent: #5fd0a3;
+    --accent-dim: #2c6b52;
+    --text: #e8ecef;
+    --text-dim: #8b94a3;
+    --danger: #e0665a;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f5f6f8;
+      --panel: #ffffff;
+      --accent: #1f9d6d;
+      --accent-dim: #b7e6d1;
+      --text: #1c1f24;
+      --text-dim: #5a6472;
+      --danger: #c23f33;
+    }
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+  .wrap {
+    width: 100%;
+    max-width: 480px;
+  }
+  h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 4px;
+    text-align: center;
+  }
+  .sub {
+    color: var(--text-dim);
+    text-align: center;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+  .panel {
+    background: var(--panel);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .row:last-child { margin-bottom: 0; }
+  label {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+  input[type="range"] {
+    flex: 1;
+    accent-color: var(--accent);
+  }
+  .speed-val {
+    min-width: 64px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem;
+  }
+  .big-letter {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+  .pattern {
+    text-align: center;
+    font-family: monospace;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    min-height: 1.4rem;
+    letter-spacing: 0.15em;
+  }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  button {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .primary {
+    background: var(--accent);
+    color: #06110c;
+  }
+  .secondary {
+    background: transparent;
+    border: 1px solid var(--accent-dim);
+    color: var(--text);
+  }
+  #voiceBtn {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .answer-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .answer-form input[type="text"] {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--accent-dim);
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--text);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 0;
+  }
+  .answer-form input[type="text"]:focus {
+    outline: 2px solid var(--accent);
+  }
+  .feedback {
+    text-align: center;
+    min-height: 1.6rem;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+  .feedback.correct { color: var(--accent); }
+  .feedback.wrong { color: var(--danger); }
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  .stats b {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--text);
+  }
+  .footer-note {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Morse Code Trainer</h1>
+  <div class="sub">Listen to the tone, type the letter</div>
+
+  <div class="panel">
+    <div class="row">
+      <label for="speed">Speed (WPM)</label>
+      <input type="range" id="speed" min="5" max="35" value="20" step="1">
+      <span class="speed-val" id="speedVal">20 wpm</span>
+    </div>
+    <div class="row">
+      <label for="mode">Character set</label>
+      <select id="mode" style="background:var(--bg); color:var(--text); border:1px solid var(--accent-dim); border-radius:8px; padding:8px;">
+        <option value="letters">Letters A–Z</option>
+        <option value="numbers">Numbers 0–9</option>
+        <option value="both">Letters + Numbers</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="big-letter" id="bigLetter">—</div>
+    <div class="pattern" id="pattern"></div>
+    <div class="btn-row">
+      <button class="primary" id="playBtn">▶ Play Tone</button>
+      <button class="secondary" id="revealBtn">Reveal</button>
+    </div>
+    <form class="answer-form" id="answerForm">
+      <input type="text" id="answerInput" maxlength="2" autocomplete="off" autocapitalize="characters" placeholder="?">
+      <button class="primary" type="submit" style="flex: 0 0 auto; padding: 14px 20px;">Check</button>
+    </form>
+    <div class="btn-row" id="voiceRow" style="display:none;">
+      <button class="secondary" id="voiceBtn" type="button">🎤 Hold to Speak</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="footer-note" id="autoListenNote" style="display:none;">Press and hold the button, say the letter, then release.</div>
+  </div>
+
+  <div class="panel">
+    <div class="stats">
+      <div><b id="statCorrect">0</b>Correct</div>
+      <div><b id="statWrong">0</b>Missed</div>
+      <div><b id="statStreak">0</b>Streak</div>
+    </div>
+  </div>
+
+  <div class="footer-note">Tap "Play Tone" any time to replay the current character.</div>
+</div>
+
+<script>
+(function() {
+  const MORSE = {
+    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+    'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+    'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+    'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+    'Y': '-.--', 'Z': '--..',
+    '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+    '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'
+  };
+  const LETTERS = Object.keys(MORSE).filter(c => /[A-Z]/.test(c));
+  const NUMBERS = Object.keys(MORSE).filter(c => /[0-9]/.test(c));
+
+  let currentChar = null;
+  let stats = { correct: 0, wrong: 0, streak: 0 };
+  let audioCtx = null;
+
+  const speedSlider = document.getElementById('speed');
+  const speedVal = document.getElementById('speedVal');
+  const modeSelect = document.getElementById('mode');
+  const bigLetter = document.getElementById('bigLetter');
+  const patternEl = document.getElementById('pattern');
+  const playBtn = document.getElementById('playBtn');
+  const revealBtn = document.getElementById('revealBtn');
+  const answerForm = document.getElementById('answerForm');
+  const answerInput = document.getElementById('answerInput');
+  const feedback = document.getElementById('feedback');
+  const statCorrect = document.getElementById('statCorrect');
+  const statWrong = document.getElementById('statWrong');
+  const statStreak = document.getElementById('statStreak');
+
+  function getPool() {
+    const m = modeSelect.value;
+    if (m === 'letters') return LETTERS;
+    if (m === 'numbers') return NUMBERS;
+    return LETTERS.concat(NUMBERS);
+  }
+
+  function pickChar() {
+    const pool = getPool();
+    let next;
+    do {
+      next = pool[Math.floor(Math.random() * pool.length)];
+    } while (next === currentChar && pool.length > 1);
+    currentChar = next;
+    bigLetter.textContent = '?';
+    patternEl.textContent = '';
+    feedback.textContent = '';
+    feedback.className = 'feedback';
+    answerInput.value = '';
+  }
+
+  function ensureAudio() {
+    if (!audioCtx) {
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {
+        audioCtx = null;
+      }
+    }
+    return audioCtx;
+  }
+
+  function playTone(durationMs, ctx, startTime) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.frequency.value = 600;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0, startTime);
+    gain.gain.linearRampToValueAtTime(0.3, startTime + 0.005);
+    gain.gain.setValueAtTime(0.3, startTime + durationMs / 1000 - 0.005);
+    gain.gain.linearRampToValueAtTime(0, startTime + durationMs / 1000);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(startTime);
+    osc.stop(startTime + durationMs / 1000 + 0.01);
+  }
+
+  function playMorse(char) {
+    const ctx = ensureAudio();
+    if (!ctx || !char) return 0;
+    const pattern = MORSE[char];
+    if (!pattern) return 0;
+
+    const wpm = parseInt(speedSlider.value, 10);
+    const ditMs = 1200 / wpm;
+    const dahMs = ditMs * 3;
+    const gapMs = ditMs;
+
+    const startDelayMs = 50;
+    let t = ctx.currentTime + startDelayMs / 1000;
+    let elapsedMs = 0;
+    for (let i = 0; i < pattern.length; i++) {
+      const symbol = pattern[i];
+      const dur = symbol === '.' ? ditMs : dahMs;
+      playTone(dur, ctx, t);
+      t += dur / 1000;
+      t += gapMs / 1000;
+      elapsedMs += dur + gapMs;
+    }
+    return startDelayMs + elapsedMs; // total ms until tone playback is done
+  }
+
+  function checkAnswer(e) {
+    e.preventDefault();
+    const guess = answerInput.value.trim().toUpperCase();
+    if (!guess) return;
+    const correct = guess === currentChar;
+    bigLetter.textContent = currentChar;
+    patternEl.textContent = MORSE[currentChar];
+
+    if (correct) {
+      stats.correct++;
+      stats.streak++;
+      feedback.textContent = 'Correct — ' + currentChar;
+      feedback.className = 'feedback correct';
+    } else {
+      stats.wrong++;
+      stats.streak = 0;
+      feedback.textContent = 'It was ' + currentChar;
+      feedback.className = 'feedback wrong';
+    }
+    updateStats();
+
+    setTimeout(() => {
+      pickChar();
+      playMorse(currentChar);
+    }, 1100);
+  }
+
+  function updateStats() {
+    statCorrect.textContent = stats.correct;
+    statWrong.textContent = stats.wrong;
+    statStreak.textContent = stats.streak;
+  }
+
+  speedSlider.addEventListener('input', () => {
+    speedVal.textContent = speedSlider.value + ' wpm';
+  });
+
+  modeSelect.addEventListener('change', () => {
+    pickChar();
+  });
+
+  playBtn.addEventListener('click', () => {
+    if (!currentChar) pickChar();
+    playMorse(currentChar);
+  });
+
+  revealBtn.addEventListener('click', () => {
+    bigLetter.textContent = currentChar;
+    patternEl.textContent = MORSE[currentChar];
+  });
+
+  answerForm.addEventListener('submit', checkAnswer);
+
+  // --- Voice input (Web Speech API) ---
+  const voiceRow = document.getElementById('voiceRow');
+  const voiceBtn = document.getElementById('voiceBtn');
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  // Spoken words often come back as words, not single letters (e.g. "alpha", "tree").
+  // Map common spoken forms to their letter/number.
+  const WORD_TO_CHAR = {
+    ALPHA:'A', BRAVO:'B', CHARLIE:'C', DELTA:'D', ECHO:'E', FOXTROT:'F',
+    GOLF:'G', HOTEL:'H', INDIA:'I', JULIET:'J', JULIETT:'J', KILO:'K', LIMA:'L',
+    MIKE:'M', NOVEMBER:'N', OSCAR:'O', PAPA:'P', QUEBEC:'Q', ROMEO:'R',
+    SIERRA:'S', TANGO:'T', UNIFORM:'U', VICTOR:'V', WHISKEY:'W', XRAY:'X',
+    'X-RAY':'X', YANKEE:'Y', ZULU:'Z',
+    ZERO:'0', ONE:'1', TWO:'2', TREE:'3', THREE:'3', FOUR:'4', FIVE:'5',
+    SIX:'6', SEVEN:'7', EIGHT:'8', NINER:'9', NINE:'9'
+  };
+
+  function extractChar(transcript) {
+    const cleaned = transcript.trim().toUpperCase().replace(/[.,!?]/g, '');
+    if (WORD_TO_CHAR[cleaned]) return WORD_TO_CHAR[cleaned];
+    // single character spoken directly, e.g. "b" or "5"
+    const firstToken = cleaned.split(/\s+/)[0];
+    if (WORD_TO_CHAR[firstToken]) return WORD_TO_CHAR[firstToken];
+    if (/^[A-Z0-9]$/.test(firstToken)) return firstToken;
+    if (/^[A-Z0-9]$/.test(cleaned)) return cleaned;
+    return cleaned; // fall back, will just register as wrong if unrecognized
+  }
+
+  let recognitionActive = false;
+  let holdActive = false;
+
+  function setListeningUI(on) {
+    if (on) {
+      voiceBtn.textContent = '● Listening…';
+      voiceBtn.classList.remove('secondary');
+      voiceBtn.classList.add('primary');
+      feedback.textContent = 'Listening…';
+      feedback.className = 'feedback';
+    } else {
+      voiceBtn.textContent = '🎤 Hold to Speak';
+      voiceBtn.classList.remove('primary');
+      voiceBtn.classList.add('secondary');
+      if (feedback.textContent === 'Listening…') feedback.textContent = '';
+    }
+  }
+
+  function showVoiceSetupError(err) {
+    voiceRow.style.display = 'flex';
+    voiceBtn.disabled = true;
+    voiceBtn.textContent = '🎤 Unavailable';
+    voiceBtn.style.opacity = '0.5';
+    const note = document.getElementById('autoListenNote');
+    note.style.display = 'block';
+    note.textContent = 'Voice input failed to start in this browser: ' + (err && err.message ? err.message : String(err));
+  }
+
+  if (SpeechRecognition) {
+    try {
+      voiceRow.style.display = 'flex';
+      document.getElementById('autoListenNote').style.display = 'block';
+
+      // Single long-lived instance, created once (avoids extra start chimes / iOS quirks)
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.maxAlternatives = 3;
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      recognition.addEventListener('start', () => {
+        recognitionActive = true;
+        voiceBtn.textContent = '● Listening…';
+        voiceBtn.classList.remove('secondary');
+        voiceBtn.classList.add('primary');
+      });
+
+      recognition.addEventListener('result', (e) => {
+        const transcript = e.results[0][0].transcript;
+        const char = extractChar(transcript);
+        answerInput.value = char;
+        checkAnswer(new Event('submit', { cancelable: true }));
+      });
+
+      recognition.addEventListener('end', () => {
+        recognitionActive = false;
+        setListeningUI(false);
+      });
+
+      recognition.addEventListener('error', (e) => {
+        recognitionActive = false;
+        setListeningUI(false);
+        feedback.textContent = 'Mic error: ' + (e && e.error ? e.error : 'unknown');
+        feedback.className = 'feedback wrong';
+      });
+
+      function beginHold() {
+        if (holdActive) return; // ignore duplicate down events (e.g. pointer + touch firing together)
+        holdActive = true;
+        // Immediate visual feedback, independent of whether start() succeeds
+        voiceBtn.classList.remove('secondary');
+        voiceBtn.classList.add('primary');
+        voiceBtn.textContent = '● Connecting…';
+        feedback.textContent = '';
+        feedback.className = 'feedback';
+
+        if (recognitionActive) return;
+        try {
+          recognition.start();
+          voiceBtn.textContent = '● Listening…';
+        } catch (err) {
+          recognitionActive = false;
+          voiceBtn.textContent = '🎤 Hold to Speak';
+          voiceBtn.classList.remove('primary');
+          voiceBtn.classList.add('secondary');
+          feedback.textContent = 'Mic error: ' + (err && err.message ? err.message : 'try again');
+          feedback.className = 'feedback wrong';
+        }
+      }
+
+      function endHold() {
+        if (!holdActive) return;
+        holdActive = false;
+        if (recognitionActive) {
+          try { recognition.stop(); } catch (e) {}
+        } else {
+          setListeningUI(false);
+        }
+      }
+
+      // Pointer Events cover mouse, touch, and pen with one consistent API —
+      // more reliable than separate touch/mouse listeners on iOS Safari.
+      if (window.PointerEvent) {
+        voiceBtn.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          try { voiceBtn.setPointerCapture(e.pointerId); } catch (err) {}
+          beginHold();
+        });
+        voiceBtn.addEventListener('pointerup', (e) => {
+          e.preventDefault();
+          endHold();
+        });
+        voiceBtn.addEventListener('pointercancel', (e) => {
+          endHold();
+        });
+      } else {
+        // Fallback for older browsers without Pointer Events
+        voiceBtn.addEventListener('touchstart', (e) => { e.preventDefault(); beginHold(); });
+        voiceBtn.addEventListener('touchend', (e) => { e.preventDefault(); endHold(); });
+        voiceBtn.addEventListener('touchcancel', (e) => { endHold(); });
+        voiceBtn.addEventListener('mousedown', beginHold);
+        voiceBtn.addEventListener('mouseup', endHold);
+        voiceBtn.addEventListener('mouseleave', () => { if (holdActive) endHold(); });
+      }
+    } catch (err) {
+      showVoiceSetupError(err);
+    }
+  }
+
+  pickChar();
+})();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {
+      // Offline caching is a nice-to-have; the app still works without it.
+    });
+  });
+}
+</script>
+</body>
+</html>
