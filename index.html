@@ -221,7 +221,7 @@
       <button class="primary" type="submit" style="flex: 0 0 auto; padding: 14px 20px;">Check</button>
     </form>
     <div class="btn-row" id="voiceRow" style="display:none;">
-      <button class="secondary" id="voiceBtn" type="button">🎤 Hold to Speak</button>
+      <button class="secondary" id="voiceBtn" type="button">🎤 Start Voice Session</button>
     </div>
     <div class="feedback" id="feedback"></div>
     <div class="footer-note" id="autoListenNote" style="display:none;">Mic opens automatically for 5s after each tone — or press and hold the button any time.</div>
@@ -237,6 +237,10 @@
 
   <div class="footer-note">Tap "Play Tone" any time to replay the current character.</div>
 </div>
+
+<audio id="silentUnlock" loop playsinline style="display:none">
+  <source src="data:audio/wav;base64,UklGRmQfAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YUAfAAABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAA==" type="audio/wav">
+</audio>
 
 <script>
 (function() {
@@ -302,6 +306,23 @@
     return audioCtx;
   }
 
+  // --- Silent-switch workaround (iOS) ---
+  // Web Audio oscillator tones default to the "ambient" audio session category
+  // on iOS, which respects the ring/silent switch. Starting a real looping
+  // <audio> element (even near-silent content) nudges Safari into the
+  // "playback" category instead, which ignores the silent switch — the same
+  // trick metronome/tuner apps use. Must be started from a direct tap.
+  let audioUnlocked = false;
+  function unlockSilentSwitch() {
+    if (audioUnlocked) return;
+    const el = document.getElementById('silentUnlock');
+    if (!el) return;
+    el.volume = 0.01; // effectively inaudible, but non-zero and real playback
+    const p = el.play();
+    if (p && p.catch) p.catch(() => {}); // ignore autoplay-policy rejections
+    audioUnlocked = true;
+  }
+
   function playTone(durationMs, ctx, startTime) {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -365,8 +386,7 @@
 
     setTimeout(() => {
       pickChar();
-      const durationMs = playMorse(currentChar);
-      if (window.__autoListenAfterTone) window.__autoListenAfterTone(durationMs);
+      playMorse(currentChar);
     }, 1100);
   }
 
@@ -385,9 +405,9 @@
   });
 
   playBtn.addEventListener('click', () => {
+    unlockSilentSwitch();
     if (!currentChar) pickChar();
-    const durationMs = playMorse(currentChar);
-    if (window.__autoListenAfterTone) window.__autoListenAfterTone(durationMs);
+    playMorse(currentChar);
   });
 
   revealBtn.addEventListener('click', () => {
@@ -426,24 +446,6 @@
   }
 
   let recognitionActive = false;
-  let holdActive = false;
-  let autoListenTimer = null;
-  let autoStopTimer = null;
-
-  function setListeningUI(on) {
-    if (on) {
-      voiceBtn.textContent = '● Listening…';
-      voiceBtn.classList.remove('secondary');
-      voiceBtn.classList.add('primary');
-      feedback.textContent = 'Listening…';
-      feedback.className = 'feedback';
-    } else {
-      voiceBtn.textContent = '🎤 Hold to Speak';
-      voiceBtn.classList.remove('primary');
-      voiceBtn.classList.add('secondary');
-      if (feedback.textContent === 'Listening…') feedback.textContent = '';
-    }
-  }
 
   function showVoiceSetupError(err) {
     voiceRow.style.display = 'flex';
@@ -455,130 +457,115 @@
     note.textContent = 'Voice input failed to start in this browser: ' + (err && err.message ? err.message : String(err));
   }
 
+  // iOS/Safari only allows a page to open the microphone from inside a
+  // direct tap — a background timer calling recognition.start() (even a
+  // few hundred ms after a tap) is silently blocked. So instead of trying
+  // to reopen the mic after every tone, one tap starts a CONTINUOUS session
+  // that stays open across rounds; we react to results as they arrive
+  // rather than re-starting recognition each time.
   if (SpeechRecognition) {
     try {
       voiceRow.style.display = 'flex';
       document.getElementById('autoListenNote').style.display = 'block';
+      document.getElementById('autoListenNote').textContent =
+        'Tap once to start — mic stays open across rounds until you tap to stop.';
 
-      // Single long-lived instance, created once (avoids extra start chimes / iOS quirks)
       const recognition = new SpeechRecognition();
       recognition.lang = 'en-US';
       recognition.maxAlternatives = 3;
       recognition.interimResults = false;
-      recognition.continuous = false;
+      recognition.continuous = true;
+
+      let sessionWanted = false; // true while the user intends the session to be running
+      let lastResultIndex = 0;
+
+      function setSessionUI(active) {
+        if (active) {
+          voiceBtn.textContent = '● Session Active — tap to stop';
+          voiceBtn.classList.remove('secondary');
+          voiceBtn.classList.add('primary');
+        } else {
+          voiceBtn.textContent = '🎤 Start Voice Session';
+          voiceBtn.classList.remove('primary');
+          voiceBtn.classList.add('secondary');
+        }
+      }
 
       recognition.addEventListener('start', () => {
         recognitionActive = true;
-        voiceBtn.textContent = '● Listening…';
-        voiceBtn.classList.remove('secondary');
-        voiceBtn.classList.add('primary');
+        lastResultIndex = 0;
+        setSessionUI(true);
       });
 
       recognition.addEventListener('result', (e) => {
-        const transcript = e.results[0][0].transcript;
-        const char = extractChar(transcript);
-        answerInput.value = char;
-        checkAnswer(new Event('submit', { cancelable: true }));
+        // continuous mode accumulates results across the whole session —
+        // only process ones we haven't seen yet.
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          if (!e.results[i].isFinal) continue;
+          const transcript = e.results[i][0].transcript;
+          const char = extractChar(transcript);
+          answerInput.value = char;
+          checkAnswer(new Event('submit', { cancelable: true }));
+        }
+        lastResultIndex = e.results.length;
       });
 
       recognition.addEventListener('end', () => {
         recognitionActive = false;
-        setListeningUI(false);
-        if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
+        // iOS caps continuous recognition (roughly a minute) and also ends
+        // on a stretch of silence — restart automatically if the user still
+        // wants the session running. This restart call happens synchronously
+        // inside a native event, which iOS tends to still allow; if it's
+        // ever blocked, we fall back to asking for one more tap.
+        if (sessionWanted) {
+          try {
+            recognition.start();
+          } catch (err) {
+            sessionWanted = false;
+            setSessionUI(false);
+            feedback.textContent = 'Session paused — tap to resume';
+            feedback.className = 'feedback';
+          }
+        } else {
+          setSessionUI(false);
+        }
       });
 
       recognition.addEventListener('error', (e) => {
+        const type = e && e.error;
+        // 'no-speech' just means a quiet stretch — not a real error in a
+        // continuous session; let the 'end' handler's auto-restart handle it.
+        if (type === 'no-speech' || type === 'aborted') return;
         recognitionActive = false;
-        setListeningUI(false);
-        feedback.textContent = 'Mic error: ' + (e && e.error ? e.error : 'unknown');
+        sessionWanted = false;
+        setSessionUI(false);
+        feedback.textContent = 'Mic error: ' + (type || 'unknown');
         feedback.className = 'feedback wrong';
       });
 
-      function beginHold() {
-        if (holdActive) return; // ignore duplicate down events (e.g. pointer + touch firing together)
-        holdActive = true;
-        // Immediate visual feedback, independent of whether start() succeeds
-        voiceBtn.classList.remove('secondary');
-        voiceBtn.classList.add('primary');
-        voiceBtn.textContent = '● Connecting…';
-        feedback.textContent = '';
-        feedback.className = 'feedback';
-
-        if (recognitionActive) return;
-        try {
-          recognition.start();
-          voiceBtn.textContent = '● Listening…';
-        } catch (err) {
-          recognitionActive = false;
-          voiceBtn.textContent = '🎤 Hold to Speak';
-          voiceBtn.classList.remove('primary');
-          voiceBtn.classList.add('secondary');
-          feedback.textContent = 'Mic error: ' + (err && err.message ? err.message : 'try again');
-          feedback.className = 'feedback wrong';
-        }
-      }
-
-      function endHold() {
-        if (!holdActive) return;
-        holdActive = false;
-        if (recognitionActive) {
+      voiceBtn.addEventListener('click', () => {
+        unlockSilentSwitch();
+        if (sessionWanted) {
+          sessionWanted = false;
           try { recognition.stop(); } catch (e) {}
+          setSessionUI(false);
         } else {
-          setListeningUI(false);
+          sessionWanted = true;
+          voiceBtn.textContent = '● Connecting…';
+          voiceBtn.classList.remove('secondary');
+          voiceBtn.classList.add('primary');
+          feedback.textContent = '';
+          feedback.className = 'feedback';
+          try {
+            recognition.start();
+          } catch (err) {
+            sessionWanted = false;
+            setSessionUI(false);
+            feedback.textContent = 'Mic error: ' + (err && err.message ? err.message : 'try again');
+            feedback.className = 'feedback wrong';
+          }
         }
-      }
-
-      // Opens the mic automatically for `windowMs` (default 5s) without
-      // requiring the button to be held — used right after a tone finishes.
-      function autoListenWindow(windowMs) {
-        if (recognitionActive || holdActive) return; // already listening; don't double-start
-        try {
-          recognition.start();
-          // 'start' listener above flips the button UI to Listening.
-          autoStopTimer = setTimeout(() => {
-            if (recognitionActive && !holdActive) {
-              try { recognition.stop(); } catch (e) {}
-            }
-          }, windowMs || 5000);
-        } catch (err) {
-          // start() can throw if called too soon after a previous stop —
-          // safe to ignore here since this path is passive, not user-initiated.
-        }
-      }
-
-      // Called by the tone-playing code with how long the tone took (ms),
-      // so listening begins right as the tone finishes.
-      window.__autoListenAfterTone = function(toneDurationMs) {
-        if (autoListenTimer) clearTimeout(autoListenTimer);
-        autoListenTimer = setTimeout(() => {
-          autoListenWindow(5000);
-        }, (toneDurationMs || 0) + 150); // small buffer after the tone ends
-      };
-
-      // Pointer Events cover mouse, touch, and pen with one consistent API —
-      // more reliable than separate touch/mouse listeners on iOS Safari.
-      if (window.PointerEvent) {
-        voiceBtn.addEventListener('pointerdown', (e) => {
-          e.preventDefault();
-          try { voiceBtn.setPointerCapture(e.pointerId); } catch (err) {}
-          beginHold();
-        });
-        voiceBtn.addEventListener('pointerup', (e) => {
-          e.preventDefault();
-          endHold();
-        });
-        voiceBtn.addEventListener('pointercancel', (e) => {
-          endHold();
-        });
-      } else {
-        // Fallback for older browsers without Pointer Events
-        voiceBtn.addEventListener('touchstart', (e) => { e.preventDefault(); beginHold(); });
-        voiceBtn.addEventListener('touchend', (e) => { e.preventDefault(); endHold(); });
-        voiceBtn.addEventListener('touchcancel', (e) => { endHold(); });
-        voiceBtn.addEventListener('mousedown', beginHold);
-        voiceBtn.addEventListener('mouseup', endHold);
-        voiceBtn.addEventListener('mouseleave', () => { if (holdActive) endHold(); });
-      }
+      });
     } catch (err) {
       showVoiceSetupError(err);
     }
