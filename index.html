@@ -224,7 +224,7 @@
       <button class="secondary" id="voiceBtn" type="button">🎤 Hold to Speak</button>
     </div>
     <div class="feedback" id="feedback"></div>
-    <div class="footer-note" id="autoListenNote" style="display:none;">Press and hold the button, say the letter, then release.</div>
+    <div class="footer-note" id="autoListenNote" style="display:none;">Mic opens automatically for 5s after each tone — or press and hold the button any time.</div>
   </div>
 
   <div class="panel">
@@ -365,7 +365,8 @@
 
     setTimeout(() => {
       pickChar();
-      playMorse(currentChar);
+      const durationMs = playMorse(currentChar);
+      if (window.__autoListenAfterTone) window.__autoListenAfterTone(durationMs);
     }, 1100);
   }
 
@@ -385,7 +386,8 @@
 
   playBtn.addEventListener('click', () => {
     if (!currentChar) pickChar();
-    playMorse(currentChar);
+    const durationMs = playMorse(currentChar);
+    if (window.__autoListenAfterTone) window.__autoListenAfterTone(durationMs);
   });
 
   revealBtn.addEventListener('click', () => {
@@ -425,6 +427,8 @@
 
   let recognitionActive = false;
   let holdActive = false;
+  let autoListenTimer = null;
+  let autoStopTimer = null;
 
   function setListeningUI(on) {
     if (on) {
@@ -480,6 +484,7 @@
       recognition.addEventListener('end', () => {
         recognitionActive = false;
         setListeningUI(false);
+        if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
       });
 
       recognition.addEventListener('error', (e) => {
@@ -522,6 +527,33 @@
           setListeningUI(false);
         }
       }
+
+      // Opens the mic automatically for `windowMs` (default 5s) without
+      // requiring the button to be held — used right after a tone finishes.
+      function autoListenWindow(windowMs) {
+        if (recognitionActive || holdActive) return; // already listening; don't double-start
+        try {
+          recognition.start();
+          // 'start' listener above flips the button UI to Listening.
+          autoStopTimer = setTimeout(() => {
+            if (recognitionActive && !holdActive) {
+              try { recognition.stop(); } catch (e) {}
+            }
+          }, windowMs || 5000);
+        } catch (err) {
+          // start() can throw if called too soon after a previous stop —
+          // safe to ignore here since this path is passive, not user-initiated.
+        }
+      }
+
+      // Called by the tone-playing code with how long the tone took (ms),
+      // so listening begins right as the tone finishes.
+      window.__autoListenAfterTone = function(toneDurationMs) {
+        if (autoListenTimer) clearTimeout(autoListenTimer);
+        autoListenTimer = setTimeout(() => {
+          autoListenWindow(5000);
+        }, (toneDurationMs || 0) + 150); // small buffer after the tone ends
+      };
 
       // Pointer Events cover mouse, touch, and pen with one consistent API —
       // more reliable than separate touch/mouse listeners on iOS Safari.
